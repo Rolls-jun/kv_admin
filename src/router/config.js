@@ -112,6 +112,24 @@ const options = {
               component: () => import('@/pages/qaList/index'),
             }
           ]
+        },
+        {
+          path: 'components',
+          name: '组件测试',
+          meta: {
+            icon: 'form',
+            page: {
+              cacheAble: false
+            }
+          },
+          component: PageView,
+          children: [
+            {
+              path: 'sku-test',
+              name: 'SKU组件测试',
+              component: () => import('@/pages/components/SkuTestPage'),
+            }
+          ]
         }
       ]
     },
