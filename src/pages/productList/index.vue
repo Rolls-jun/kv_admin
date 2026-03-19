@@ -110,23 +110,97 @@
           </a-form-item>
         </a-col>
         <a-col :md="11" :sm="11" :xs="11" :span="11">
+          <a-form-item label="售价">
+            <a-input-number style="width:150px" v-model="editData.price" :min="1" :max="10000" placeholder="请输入售价" />
+          </a-form-item>
+        </a-col>
+        <!-- <a-col :md="11" :sm="11" :xs="11" :span="11">
           <a-form-item label="原价">
             <a-input-number style="width:150px" v-model="editData.price_old" :min="1" :max="10000" placeholder="请输入原价" />
         </a-form-item>
-        </a-col>
+        </a-col> -->
         <a-col :md="11" :sm="11" :xs="11" :span="11" offset="1">
-          <a-form-item label="优惠价">
-            <a-input-number style="width:150px" v-model="editData.price" :min="1" :max="10000" placeholder="请输入售价" />
-        </a-form-item>
-        </a-col>
-        <a-col :md="11" :sm="11" :xs="11" :span="11">
-          <a-form-item label="缩略图">
-            <imgUpload v-if="detailModalInfo.visible" multiple :maxCount="2" :urls="editData.pic_url" @uploadImgChange="detailUploadChange($event,'pic_url')" />
+          <a-form-item label="最多玩家人数">
+            <a-input-number style="width:150px" v-model="editData.max_person" :min="1" :max="10000" placeholder="请输入售价" />
           </a-form-item>
         </a-col>
-        <a-col :md="11" :sm="11" :xs="11" :span="11">
-          <a-form-item label="英文缩略图">
-            <imgUpload v-if="detailModalInfo.visible" multiple :maxCount="2" :urls="editData.pic_url_en" @uploadImgChange="detailUploadChange($event,'pic_url_en')" />
+        <a-col :md="24" :sm="1244" :xs="24" :span="24">
+          <a-form-item v-bind="{
+            labelCol: {
+              span: 3,
+            },
+            wrapperCol: {
+              span: 21,
+            },
+          }" 
+        label="封面图">
+            <imgUpload v-if="detailModalInfo.visible" multiple :maxCount="5" :urls="editData.pic_url" @uploadImgChange="detailUploadChange($event,'pic_url')" />
+          </a-form-item>
+        </a-col>
+        <a-col :md="24" :sm="24" :xs="24" :span="24">
+          <a-form-item
+          v-bind="{
+            labelCol: {
+              span: 3,
+            },
+            wrapperCol: {
+              span: 21,
+            },
+          }"
+           label="英文封面图">
+            <imgUpload v-if="detailModalInfo.visible" multiple :maxCount="5" :urls="editData.pic_url_en" @uploadImgChange="detailUploadChange($event,'pic_url_en')" />
+          </a-form-item>
+        </a-col>
+        <a-col :md="24" :sm="24" :xs="24" :span="24">
+          <a-form-item v-bind="{
+            labelCol: {
+              span: 3,
+            },
+            wrapperCol: {
+              span: 21,
+            },
+            }" 
+          label="组合名">
+          <sku-component v-if="detailModalInfo.visible" :list="editData.specifications.skuList" @updateSkuList="skuListChange($event,'specifications','skuList')" />
+          </a-form-item>
+        </a-col>
+        <a-col :md="24" :sm="24" :xs="24" :span="24">
+          <a-form-item v-bind="{
+            labelCol: {
+              span: 3,
+            },
+            wrapperCol: {
+              span: 21,
+            },
+            }" 
+          label="英文组合名">
+            <sku-component v-if="detailModalInfo.visible" :list="editData.specifications_en.skuList" @updateSkuList="skuListChange($event,'specifications_en','skuList')" />
+          </a-form-item>
+        </a-col>
+        <a-col :md="24" :sm="24" :xs="24" :span="24">
+          <a-form-item v-bind="{
+            labelCol: {
+              span: 3,
+            },
+            wrapperCol: {
+              span: 21,
+            },
+            }" 
+          label="参数信息">
+          <info-component v-if="detailModalInfo.visible" :list="editData.specifications.infoList" @updateSkuList="skuListChange($event,'specifications','infoList')" />
+          </a-form-item>
+        </a-col>
+        <a-col :md="24" :sm="24" :xs="24" :span="24">
+          <a-form-item v-bind="{
+            labelCol: {
+              span: 3,
+            },
+            wrapperCol: {
+              span: 21,
+            },
+            }" 
+          label="英文参数信息">
+            <info-component v-if="detailModalInfo.visible" :list="editData.specifications_en.infoList" @updateSkuList="skuListChange($event,'specifications_en','infoList')" />
           </a-form-item>
         </a-col>
       </a-row>
@@ -165,6 +239,8 @@ import { BASE_PAGINATION } from '@/rayframework/common-pagination';
 import imgUpload from '@/components/my/imgUpload.vue';
 import previewImgModal from '@/components/my/previewImgModal.vue';
 import editorBar from '@/components/my/editorBar'
+import skuComponent from '@/components/my/skuComponent'
+import infoComponent from '@/components/my/infoComponent'
 import { isJSONString} from '@/utils/util.js'
 import {
   productListQuery,
@@ -182,14 +258,22 @@ const  editData = {
   pic_url_en: '', //英文缩略图
   description_en:'',//英文描述
   contents_en: '', //英文内容
-  price_old: '',//原价
-  price:'',//优惠价
+  price: '',//优惠价
+  max_person:'',//最大玩家人数
+  specifications: {// 中文
+    skuList: [],//规格组合
+    infoList:[],//参考信息
+  },
+  specifications_en: {// 英文
+    skuList: [],//规格组合
+    infoList:[],//参考信息
+  },
   index_top:0 //是否首页置顶
 }
 
 
 export default {
-  components: { imgUpload, editorBar,previewImgModal },
+  components: { imgUpload, editorBar,previewImgModal,skuComponent,infoComponent },
   data() {
     return {
       minHeight: window.innerHeight - 124,
@@ -236,8 +320,8 @@ export default {
           ellipsis: true,
         },
         {
-          title: '原价',
-          dataIndex: 'price_old',
+          title: '最大玩家人数',
+          dataIndex: 'max_person',
           align: 'center',
           width: 80,
         },
@@ -284,6 +368,10 @@ export default {
       this.photo = value[0].url;
       this.$refs.previewImgModalRef.initModal();
     },
+    skuListChange(arr, type,name) { 
+      this.editData[type][name] = arr;
+      console.log('editData---', this.editData)
+    },
     // 详情modal上传返回
     detailUploadChange(arr,type) {
       this.editData[type] = arr.map(item => {
@@ -318,7 +406,10 @@ export default {
           const { data } = res.data;
           data.pic_url = isJSONString(data.pic_url) ? JSON.parse(data.pic_url) :[]
           data.pic_url_en = isJSONString(data.pic_url_en) ? JSON.parse(data.pic_url_en) : []
+          data.specifications = isJSONString(data.specifications) ? JSON.parse(data.specifications) : {}
+          data.specifications_en = isJSONString(data.specifications_en) ? JSON.parse(data.specifications_en) : {}
           this.editData = data;
+          // console.log('editData===',this.editData)
           this.detailModalInfo.visible = true;
           this.detailModalInfo.isEdit = true;
         }
@@ -339,14 +430,14 @@ export default {
         this.$message.warning('请输入英文标题！');
         return;
       }
-      if(this.editData.title.length <3 || this.editData.title.length > 100){
-          this.$message.warning('标题长度控制在3到100字符！');
-        return;
-      }
-      if(this.editData.title_en.length <3 || this.editData.title_en.length > 150){
-          this.$message.warning('英文标题长度控制在3到150字符！');
-        return;
-      }
+      // if(this.editData.title.length <3 || this.editData.title.length > 100){
+      //     this.$message.warning('标题长度控制在3到100字符！');
+      //   return;
+      // }
+      // if(this.editData.title_en.length <3 || this.editData.title_en.length > 150){
+      //     this.$message.warning('英文标题长度控制在3到150字符！');
+      //   return;
+      // }
       if (this.editData.description == '') {
         this.$message.warning('请输入描述！');
         return;
@@ -355,14 +446,14 @@ export default {
         this.$message.warning('请输入英文描述！');
         return;
       }
-      if (this.editData.price_old == '') {
-        this.$message.warning('请输入原价！');
+      if (this.editData.max_person == '') {
+        this.$message.warning('请输入最大玩家人数！');
         return;
       }
-      if (this.editData.price == '') {
-        this.$message.warning('请输入优惠价！');
-        return;
-      }
+      // if (this.editData.price == '') {
+      //   this.$message.warning('请输入优惠价！');
+      //   return;
+      // }
       if (this.editData.pic_url == '') {
         this.$message.warning('请上传缩略图！');
         return;
@@ -371,6 +462,22 @@ export default {
         this.$message.warning('请上传英文缩略图！');
         return;
       }
+      if (this.editData.specifications.skuList.length === 0) {
+        this.$message.warning('请输入组合信息！');
+        return;
+      }
+      // if (this.editData.specifications_en.skuList.length === 0) {
+      //   this.$message.warning('请输入英文组合信息！');
+      //   return;
+      // }
+      // if (this.editData.specifications.infoList.length === 0) {
+      //   this.$message.warning('请输入产品参数信息！');
+      //   return;
+      // }
+      // if (this.editData.specifications_en.infoList.length === 0) {
+      //   this.$message.warning('请输入产品英文参数信息！');
+      //   return;
+      // }
       if (this.editData.contents == '') {
         this.$message.warning('请输入内容！');
         return;
@@ -381,6 +488,10 @@ export default {
       }
       this.editData.pic_url = JSON.stringify(this.editData.pic_url) 
       this.editData.pic_url_en = JSON.stringify(this.editData.pic_url_en)
+      this.editData.specifications = JSON.stringify(this.editData.specifications)
+      this.editData.specifications_en = JSON.stringify(this.editData.specifications_en)
+      // console.log('this.editData.specifications===',this.editData.specifications)
+      // console.log('this.editData.specifications_en===',this.editData.specifications_en)
       if (this.detailModalInfo.isEdit) {
         this.btnLoading = true;
         productUpdate({

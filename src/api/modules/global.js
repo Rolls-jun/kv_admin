@@ -9,20 +9,6 @@ import {request, METHOD} from '@/utils/request'
  * @param password password
  */
 
-// export function testUser() {
-//   return service({
-//     url: '/webApi/admin/user/test',
-//     method: 'post',
-//     data: {}
-//   }).catch((err) => err);
-// }
-// export function testLogin() {
-//   return service({
-//     url: '/webApi/admin/user/login',
-//     method: 'post',
-//     data: {}
-//   }).catch((err) => err);
-// }
 // 上传图片
 export function uploadPhoto(file,typeName = 'image') {
   const param = new FormData()

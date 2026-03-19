@@ -45,4 +45,16 @@ export const isJSONString = (str) => {
   }
 }
 
+// 下载文件
+export const downloadFile = (url) => {
+  // console.log('name===',name,url)
+  const link = document.createElement('a'); // 创建一个 元素
+  link.href = url;  //设置链接的 href 属性
+  link.download = name;  //设置文件名
+  link.style.display = 'none'; // 隐藏元素
+  document.body.appendChild(link); //将链接添加到文档中
+  link.click(); // 模拟点击，触发下载
+  document.body.removeChild(link); //下载完成，删除元素
+};
+
 const _toString = Object.prototype.toString

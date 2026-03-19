@@ -282,14 +282,14 @@ export default {
         this.$message.warning('请输入英文标题！');
         return;
       }
-      if(this.editData.title.length <3 || this.editData.title.length > 100){
-          this.$message.warning('标题长度控制在3到100字符！');
-        return;
-      }
-      if(this.editData.title_en.length <3 || this.editData.title_en.length > 150){
-          this.$message.warning('英文标题长度控制在3到150字符！');
-        return;
-      }
+      // if(this.editData.title.length <3 || this.editData.title.length > 100){
+      //     this.$message.warning('标题长度控制在3到100字符！');
+      //   return;
+      // }
+      // if(this.editData.title_en.length <3 || this.editData.title_en.length > 150){
+      //     this.$message.warning('英文标题长度控制在3到150字符！');
+      //   return;
+      // }
       if (this.editData.pic_url == []) {
         this.$message.warning('请上传缩略图！');
         return;

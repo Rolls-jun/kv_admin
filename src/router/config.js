@@ -112,10 +112,9 @@ const options = {
               component: () => import('@/pages/qaList/index'),
             }
           ]
-        },
-        {
-          path: 'components',
-          name: '组件测试',
+        },{
+          path: 'order',
+          name: '订单',
           meta: {
             icon: 'form',
             page: {
@@ -125,12 +124,12 @@ const options = {
           component: PageView,
           children: [
             {
-              path: 'sku-test',
-              name: 'SKU组件测试',
-              component: () => import('@/pages/components/SkuTestPage'),
+              path: 'list',
+              name: '订单列表',
+              component: () => import('@/pages/orderList/index'),
             }
           ]
-        }
+        },
       ]
     },
   ]

@@ -161,3 +161,23 @@ export async function suggestReaded(data) {
   });
   return request(`${API_BASE_URL}/webApi/admin/suggest/readed`, METHOD.POST, param);
 }
+
+// 订单
+
+// 订单
+export async function shoppingListQuery(data) {
+  let param = new FormData();
+  Object.keys(data).forEach((item) => {
+    param.append(item, data[item]);
+  });
+  return request(`${API_BASE_URL}/webApi/admin/shopping/getList`, METHOD.POST, param);
+}
+
+// 订单：详情
+export async function shoppingDetail(data) {
+  let param = new FormData();
+  Object.keys(data).forEach((item) => {
+    param.append(item, data[item]);
+  });
+  return request(`${API_BASE_URL}/webApi/admin/shopping/detail`, METHOD.POST, param);
+}

@@ -6,9 +6,16 @@
       class="sku-item"
     >
       <a-input 
-        v-model="item.value" 
-        placeholder="请输入SKU信息" 
+        v-model="item.name" 
+        placeholder="请输入组合名称" 
         class="sku-input"
+        @change="inputChange"
+      />
+      <a-input 
+        v-model="item.price" 
+        placeholder="请输入价格" 
+        class="sku-price"
+        @change="inputChange"
       />
       <div class="sku-buttons">
         <a-button 
@@ -51,21 +58,53 @@
 <script>
 export default {
   name: 'SkuComponent',
+  props:{
+    list:{
+      type:[Array,String],
+      default:()=>{
+        return []
+      }
+    },
+  },
   data() {
     return {
       skuList: [
-        { value: '' }
+        {
+          name: '',
+          price:''
+        }
       ]
     }
   },
+  mounted() { 
+    if (this.list.length == 0) return
+    console.log('info===',this.list)
+    if(typeof this.list == 'object'){
+      this.skuList = this.list
+    }else if(typeof this.urls == 'string'){
+      this.skuList = [this.list]
+    }
+  },
+  watch: {
+
+  },
   methods: {
+    inputChange() { 
+      // console.log('data---',event,index)
+      // this.skuList[index].value = event.data;
+      this.updateList()
+    },
+    updateList() { 
+      this.$emit('updateSkuList',this.skuList)
+    },
     addSku() {
       this.skuList.push({ value: '' })
+      this.updateList()
     },
     confirmDelete(index) {
       this.$confirm({
         title: '确认删除',
-        content: '确定要删除这个SKU吗？',
+        content: '确定要删除这个吗？',
         okText: '确定',
         cancelText: '取消',
         onOk: () => {
@@ -75,6 +114,7 @@ export default {
     },
     deleteSku(index) {
       this.skuList.splice(index, 1)
+      this.updateList()
     }
   }
 }
@@ -93,6 +133,10 @@ export default {
 
 .sku-input {
   flex: 1;
+  margin-right: 10px;
+}
+.sku-price {
+  flex: 0 0 300px;
   margin-right: 10px;
 }
 
