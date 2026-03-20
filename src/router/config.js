@@ -129,6 +129,23 @@ const options = {
               component: () => import('@/pages/orderList/index'),
             }
           ]
+        },{
+          path: 'aboutUs',
+          name: '关于我们',
+          meta: {
+            icon: 'form',
+            page: {
+              cacheAble: false
+            }
+          },
+          component: PageView,
+          children: [
+            {
+              path: 'index',
+              name: '关于我们',
+              component: () => import('@/pages/aboutUs/index'),
+            }
+          ]
         },
       ]
     },

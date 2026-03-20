@@ -65,6 +65,8 @@ const resp401 = {
    * @returns {Promise<never>}
    */
   onRejected(error, options) {
+    console.log('resp401===',error)
+
     const {message} = options
     const {response} = error
     if (response.status === 401) {
@@ -83,6 +85,8 @@ const resp403 = {
     return response
   },
   onRejected(error, options) {
+    console.log('resp403===',error)
+
     const {message} = options
     const {response} = error
     if (response.status === 403) {
@@ -100,7 +104,10 @@ const reqCommon = {
    * @returns {*}
    */
   onFulfilled(config, options) {
-    config.data.append('user_id',Cookie.get('token'))
+    if (!config.data) {
+      config.data = new FormData()
+     }
+    config.data.append('user_id', Cookie.get('token'))
     const {message} = options
     const {url, xsrfCookieName} = config
     if (url.indexOf('login') === -1 && xsrfCookieName && !Cookie.get(xsrfCookieName)) {

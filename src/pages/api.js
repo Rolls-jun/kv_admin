@@ -181,3 +181,17 @@ export async function shoppingDetail(data) {
   });
   return request(`${API_BASE_URL}/webApi/admin/shopping/detail`, METHOD.POST, param);
 }
+
+// 关于我们
+export async function webConfigAbout(data) {
+  let param = new FormData();
+  Object.keys(data).forEach((item) => {
+    param.append(item, data[item]);
+  });
+  return request(`${API_BASE_URL}/webApi/admin/webConfig/aboutUs`, METHOD.POST, param);
+}
+
+// 关于我们 get
+export async function getWebConfigAbout() {
+  return request(`${API_BASE_URL}/webApi/admin/webConfig/getAboutUs`, METHOD.POST);
+}

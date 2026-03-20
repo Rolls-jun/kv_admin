@@ -42,7 +42,7 @@
         </span>
       </a-table>
     </a-card>
-    <a-modal width="80%" :visible="visible" title="订单详情" centered>
+    <a-modal width="80%" :visible="visible" title="订单详情" @cancel="hideModal" centered>
       <a-table
         bordered
         :columns="detailColumns"
@@ -300,7 +300,8 @@ export default {
       this.getList();
     },
     downloadPdf(url) { 
-      downloadFile(url)
+      downloadFile(url,'shoppingCart.pdf')
+      // window.open(url, '_blank');
     }
   },
 };
