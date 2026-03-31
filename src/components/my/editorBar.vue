@@ -89,8 +89,8 @@ export default {
             //   'insertTable',
             // ],//显示菜单
             // excludeKeys: ['code', 'todo', 'group-video', 'codeBlock','fullScreen'], //排除菜单,调试选中 dom 节点可查看相应菜单 Key
+            // excludeKeys: ['group-video','fullScreen'], //排除菜单,调试选中 dom 节点可查看相应菜单 Key
             excludeKeys: ['group-video'], //排除菜单,调试选中 dom 节点可查看相应菜单 Key
-            // excludeKeys:['fullScreen']
           },
           mode: 'default', // 'default' or 'simple'  
         },
@@ -167,4 +167,12 @@ export default {
     },
 }}
 </script>
-<style src="@wangeditor/editor/dist/css/style.css"></style>
+<style src="@wangeditor/editor/dist/css/style.css">
+
+</style>
+<style lang="less" scoped>
+.editor-bar{
+  z-index:10;
+}
+</style>
+

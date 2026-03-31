@@ -212,7 +212,7 @@
             span: 22,
           },
         }">
-          <editorBar v-if="detailModalInfo.visible" v-model="editData.contents" height="300px"></editorBar>
+          <editorBar v-if="detailModalInfo.visible" v-model="editData.contents" height="800px"></editorBar>
         </a-form-item>
         <a-form-item label="英文内容" v-bind="{
           labelCol: {
@@ -222,7 +222,7 @@
             span: 22,
           },
         }">
-          <editorBar v-if="detailModalInfo.visible" v-model="editData.contents_en" height="300px"></editorBar>
+          <editorBar v-if="detailModalInfo.visible" v-model="editData.contents_en" height="800px"></editorBar>
         </a-form-item>
       </a-form>
       <template #footer>

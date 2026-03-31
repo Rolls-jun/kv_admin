@@ -77,11 +77,11 @@
         </a-card>
       </template>
       
-      <a-row type="flex" justify="start" style="margin-top:20px">
-        <a-col :md="11" :sm="11" :xs="11" :span="11" >
+      <a-row type="flex" justify="center" style="margin-top:20px">
+        <a-col :md="5" :sm="5" :xs="5" :span="5" >
           <a-button @click="isEdit = false" block>取消</a-button>
         </a-col>
-        <a-col :md="11" :sm="11" :xs="11" :span="11" offset="2">
+        <a-col :md="5" :sm="5" :xs="5" :span="5" offset="2">
           <a-button type="primary" :disabled="btnLoading" @click="save" block>保存</a-button>
         </a-col>
       </a-row>        
