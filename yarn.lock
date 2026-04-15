@@ -10484,6 +10484,11 @@ vue-cli-plugin-style-resources-loader@^0.1.4:
   resolved "https://registry.npm.taobao.org/vue-cli-plugin-style-resources-loader/download/vue-cli-plugin-style-resources-loader-0.1.4.tgz#6087a86132ea8125aa89e5f8e0a978fbc8cf6f59"
   integrity sha1-YIeoYTLqgSWqieX44Kl4+8jPb1k=
 
+vue-cropper@^0.6.5:
+  version "0.6.5"
+  resolved "https://registry.npmmirror.com/vue-cropper/-/vue-cropper-0.6.5.tgz#c259d3cc57b84ad4be23a7dd63d91c1def90abde"
+  integrity sha512-lSvY6IpeA/Tv/iPZ/FOkMHVRBPSlm7t57nuHEZFBMRNOH8ElvfqVlnHGDOAMlvPhh9gHiddiQoASS+fY0MFX0g==
+
 vue-eslint-parser@^7.0.0:
   version "7.1.0"
   resolved "https://registry.npm.taobao.org/vue-eslint-parser/download/vue-eslint-parser-7.1.0.tgz?cache=0&sync_timestamp=1589566521118&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fvue-eslint-parser%2Fdownload%2Fvue-eslint-parser-7.1.0.tgz#9cdbcc823e656b087507a1911732b867ac101e83"

@@ -34,12 +34,12 @@
       >
       <template slot="pic_url" slot-scope="record">
         <a href="javascript:void(0)">
-          <img v-if="record" :src="record && record[0].url" alt="" style="width: 50px; height: 34px; margin-right: 10px" @click="showPhoto(record)" />
+          <img v-if="record" :src="record.length > 0  && record[0].url" alt="" style="width: 50px; height: 34px; margin-right: 10px" @click="showPhoto(record)" />
         </a>
       </template>
       <template slot="pic_url_en" slot-scope="record">
         <a href="javascript:void(0)">
-          <img v-if="record" :src="record && record[0].url" alt="" style="width: 50px; height: 34px; margin-right: 10px" @click="showPhoto(record)" />
+          <img v-if="record" :src="record.length > 0 && record[0].url" alt="" style="width: 50px; height: 34px; margin-right: 10px" @click="showPhoto(record)" />
         </a>
       </template>
         <span slot="action" slot-scope="record">
@@ -58,7 +58,7 @@
             <div class="top-content" style="text-align: right;margin:10px">
               <a-button style="" type="primary" @click="togglePreview">{{ previewCn ? '中文':'英文' }}</a-button>
             </div>
-            <div class="title mb60">{{ detail.myTitle }}</div>
+            <div class="title mb60" :style="{ 'fontSize': detail.titleFontSize+'px'}">{{ detail.myTitle }}</div>
             <div class="content b-f mb60 clearfix" v-html="detail.myContents"></div>
           </div>
         </a-col>
@@ -99,6 +99,17 @@
             </a-form-item>
             </a-col>
             <a-col :md="11" :sm="11" :xs="11" :span="11">
+              <a-form-item label="字体大小">
+                <a-slider :marks="marks" v-model="editData.setup.title_size" :default-value="30" :min="25" :max="45" @afterChange="titleFontChange($event,'cn')" />
+              </a-form-item>
+            </a-col>
+            <a-col :md="11" :sm="11" :xs="11" :span="11">
+              <a-form-item label="英文字体大小">
+                <a-slider :marks="marks" v-model="editData.setup.title_size_en" :default-value="30" :min="25" :max="45" @afterChange="titleFontChange($event,'en')" />
+              </a-form-item>
+            </a-col>
+
+            <a-col :md="11" :sm="11" :xs="11" :span="11">
               <a-form-item label="描述">
                 <a-input type="textarea" v-model.trim="editData.description" placeholder="请输入描述" style="height:100px" />
               </a-form-item>
@@ -108,9 +119,14 @@
                 <a-input type="textarea" v-model.trim="editData.description_en" placeholder="请输入英文描述" style="height:100px" />
               </a-form-item>
             </a-col>
-            <a-col :md="11" :sm="11" :xs="11" :span="11">
+            <!-- <a-col :md="11" :sm="11" :xs="11" :span="11">
               <a-form-item label="缩略图">
                 <imgUpload v-if="visible" multiple :maxCount="2" :urls="editData.pic_url" @uploadImgChange="uploadImgChange($event,'pic_url')" />
+              </a-form-item>
+            </a-col> -->
+            <a-col :md="11" :sm="11" :xs="11" :span="11">
+              <a-form-item label="缩略图">
+                <imgUploadWithCrop v-if="visible" multiple :maxCount="2" :urls="editData.pic_url" @uploadImgChange="uploadImgChange($event,'pic_url')" />
               </a-form-item>
             </a-col>
             <a-col :md="11" :sm="11" :xs="11" :span="11">
@@ -159,6 +175,7 @@
 import { cloneDeep } from 'lodash-es';
 import { BASE_PAGINATION } from '@/rayframework/common-pagination';
 import imgUpload from '@/components/my/imgUpload.vue';
+import imgUploadWithCrop from '@/components/my/imgUploadWithCrop.vue';
 import previewImgModal from '@/components/my/previewImgModal.vue';
 import editorBar from '@/components/my/editorBar'
 import { isJSONString} from '@/utils/util.js'
@@ -178,7 +195,11 @@ const  editData = {
   pic_url_en: '', //英文缩略图
   description_en:'',//英文描述
   contents_en: '', //英文内容
-  index_top:0 //是否首页置顶
+  index_top: 0, //是否首页置顶
+  setup: {
+    title_size: 30,
+    title_size_en: 30
+  } 
 }
 const detail = {
   myTitle:'',
@@ -189,7 +210,7 @@ const detail = {
 
 
 export default {
-  components: { imgUpload, editorBar,previewImgModal },
+  components: { imgUpload, imgUploadWithCrop,editorBar,previewImgModal },
   data() {
     return {
       minHeight: window.innerHeight - 124,
@@ -267,15 +288,31 @@ export default {
       },
       detail: cloneDeep(detail),
       curContent_type: 'CN',//当前内容类型（CN,EN）
-      previewCn:true
+      previewCn: true,
+      marks: {
+        25: '25',
+        30: '30',
+        35: '35',
+        40: '40',
+        45: '45',
+      },
     };
   },
   mounted() {
     this.getList();
   },
   methods: {
+    titleFontChange(e, type) { 
+      console.log('e====',e)
+      if (type == 'cn') {
+        this.editData.setup.title_size = e;
+      } else { 
+        this.editData.setup.title_size_en = e;
+      }
+    },
     //查看图片
     showPhoto(value) {
+      if (!value || value.length == 0) return
       this.photo = value[0].url;
       this.$refs.previewImgModalRef.initModal();
     },
@@ -286,10 +323,6 @@ export default {
           url:item.url
         }
        });
-    },
-    initAddModal() {
-      this.isEdit = false;
-      this.visible = true;
     },
     initContentModal(type) { 
       this.contentModal.show = true;
@@ -318,6 +351,12 @@ export default {
         }
       });
     },
+    // 添加详情
+    initAddModal() {
+      this.isEdit = false;
+      this.visible = true;
+    },
+    // 编辑详情
     initEditModal(item) {
       // this.editData = cloneDeep(item);
       this.tableLoading = true;
@@ -329,6 +368,7 @@ export default {
           const { data } = res.data;
           data.pic_url = isJSONString(data.pic_url) ? JSON.parse(data.pic_url) :[]
           data.pic_url_en = isJSONString(data.pic_url_en) ? JSON.parse(data.pic_url_en) : []
+          data.setup = isJSONString(data.setup) ? JSON.parse(data.setup) : {}
           this.editData = data;
           this.visible = true;
           this.isEdit = true;
@@ -343,8 +383,9 @@ export default {
     checkDataOflang (){ 
       // console.log('detail===', state.detail)
       const previewCn = this.previewCn;
-      const {title,title_en,description,description_en,pic_url,pic_url_en,contents,contents_en } = this.editData
-      this.detail.myTitle = previewCn ? title :title_en;
+      const {title,title_en,setup,description,description_en,pic_url,pic_url_en,contents,contents_en } = this.editData
+      this.detail.myTitle = previewCn ? title : title_en;
+      this.detail.titleFontSize = previewCn ? setup.title_size : setup.title_size_en;
       this.detail.myDescription = previewCn ? description:description_en
       this.detail.myPicUrl = previewCn ? pic_url[0].url:pic_url_en[0].url
       this.detail.myContents = previewCn ? contents:contents_en
@@ -406,6 +447,7 @@ export default {
       }
       this.editData.pic_url = JSON.stringify(this.editData.pic_url)
       this.editData.pic_url_en = JSON.stringify(this.editData.pic_url_en)
+      this.editData.setup = JSON.stringify(this.editData.setup)
       if (this.isEdit) {
         this.btnLoading = true;
         infomationUpdate({
@@ -488,7 +530,8 @@ export default {
   padding-top:10px;
   background: #eee;
   .title{
-    font-size:40px;
+    // font-size:40px;
+    text-align: center;
     color:#000;
     border-radius:8px;
     max-width:400px;

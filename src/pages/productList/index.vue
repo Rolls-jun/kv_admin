@@ -258,6 +258,7 @@ const  editData = {
   pic_url_en: '', //英文缩略图
   description_en:'',//英文描述
   contents_en: '', //英文内容
+  price_old: 0,//原价
   price: '',//优惠价
   specifications: {// 中文
     skuList: [],//规格组合

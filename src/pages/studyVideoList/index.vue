@@ -13,10 +13,10 @@
             <a-form-item>
               <a-button type="primary" @click="handleSearch">查询</a-button>
             </a-form-item>
-            <a-form-item v-if="product_id">
+            <a-form-item>
               <a-divider type="vertical" />
             </a-form-item>
-            <a-form-item v-if="product_id">
+            <a-form-item>
               <a-button type="primary" :loading="initAddBtnLoading" @click="initAddModal('detail')">添加</a-button>
             </a-form-item>
           </a-form>
@@ -42,6 +42,10 @@
           <img :src="record[0].url" alt="" style="width: 50px; height: 34px; margin-right: 10px" @click="showPhoto(record)" />
         </a>
       </template>
+      <template slot="product_id" slot-scope="record">
+        <a-tag v-if="record === 0" color="#e91e63">未绑定</a-tag>
+        <a-tag v-else color="#2db7f5">已绑定</a-tag>
+      </template>
         <span slot="action" slot-scope="record">
           <a class="mr8" @click="editDetailModal(record)"> <a-icon type="edit" style="margin-right: 5px;" />编辑 </a>
           <a-popconfirm title="是否要删除?" ok-text="删除" cancel-text="取消" @confirm="handleDelete(record.id)">
@@ -65,13 +69,13 @@
       >
       <a-row type="flex" justify="space-between" class="mt20">
         <a-col :md="11" :sm="11" :xs="11" :span="11">
-          <a-form-item label="文件标题">
-          <a-input v-model.trim="detailData.title" placeholder="请输入文件标题" />
+          <a-form-item label="视频标题">
+          <a-input v-model.trim="detailData.title" placeholder="请输入视频标题" />
         </a-form-item>
         </a-col>
         <a-col :md="11" :sm="11" :xs="11" :span="11" offset="1">
-          <a-form-item label="文件英文标题">
-          <a-input v-model.trim="detailData.title_en" placeholder="请输入文件英文标题" />
+          <a-form-item label="英文标题">
+          <a-input v-model.trim="detailData.title_en" placeholder="请输入视频英文标题" />
         </a-form-item>
         </a-col>
         <a-col :md="24" :sm="24" :xs="24" :span="24">
@@ -84,9 +88,9 @@
                 span: 21,
               },
             }" 
-            label="文件地址"
+            label="视频连接地址"
           >
-            <a-input v-model.trim="detailData.link_url" placeholder="请输入文件标题" />
+            <a-input v-model.trim="detailData.link_url" placeholder="请输入视频标题" />
           </a-form-item>
         </a-col>
         <a-col :md="24" :sm="24" :xs="24" :span="24">
@@ -99,9 +103,9 @@
                 span: 21,
               },
             }" 
-          label="英文文件地址"
+          label="英文视频连接地址"
           >
-            <a-input v-model.trim="detailData.link_url_en" placeholder="请输入文件英文标题" />
+            <a-input v-model.trim="detailData.link_url_en" placeholder="请输入视频英文标题" />
           </a-form-item>
         </a-col>
         <a-col :md="11" :sm="11" :xs="11" :span="11">
@@ -115,13 +119,27 @@
           </a-form-item>
         </a-col>
         <a-col :md="11" :sm="11" :xs="11" :span="11">
-          <a-form-item label="文件封面图">
+          <a-form-item label="视频封面图">
             <imgUpload v-if="detailModalInfo.visible" multiple :maxCount="2" :urls="detailData.pic_url" @uploadImgChange="detailUploadChange($event,'pic_url')" />
           </a-form-item>
         </a-col>
         <a-col :md="11" :sm="11" :xs="11" :span="11">
-          <a-form-item label="文件英文封面图">
+          <a-form-item label="视频英文封面图">
             <imgUpload v-if="detailModalInfo.visible" multiple :maxCount="2" :urls="detailData.pic_url_en" @uploadImgChange="detailUploadChange($event,'pic_url_en')" />
+          </a-form-item>
+        </a-col>
+        <a-col :md="11" :sm="11" :xs="11" :span="11">
+          <a-form-item label="对应产品">
+            <a-select 
+            show-search
+            v-model="detailData.product_id"
+            style="width: 220px" 
+            :filter-option="filterOption"
+            >
+              <a-select-option v-for="(product) in productList" :key="product.id" :value="product.id">
+                {{ product.title }}(￥{{ product.price }})
+              </a-select-option>
+            </a-select>
           </a-form-item>
         </a-col>
       </a-row>
@@ -146,17 +164,19 @@ import {
   linkAdd,
   linkUpdate,
   linkDel,
+  productListQuery
 } from '../api';
 
 const detailData = {
   id:'',
   title: '', //	标题
+  product_id: 0,//绑定的产品
   pic_url: '', //封面图
-  link_url:'',//文件
+  link_url:'',//视频
   description:'',//描述
   title_en: '', //英文标题
   pic_url_en: '', //英文封面图
-  link_url_en:'',//英文文件
+  link_url_en:'',//英文视频
   description_en:'',//英文描述
 }
 
@@ -190,14 +210,14 @@ export default {
           ellipsis: true,
         },
         {
-          title: '文件链接地址',
+          title: '视频链接地址',
           dataIndex: 'link_url',
           align: 'center',
           width: 100,
           ellipsis: true,
         },
         {
-          title: '英文文件链接地址',
+          title: '英文视频链接地址',
           dataIndex: 'link_url_en',
           align: 'center',
           width: 100,
@@ -224,6 +244,15 @@ export default {
           ellipsis: true,
         },
         {
+          title: '已绑定产品',
+          dataIndex: 'product_id',
+          scopedSlots: {
+            customRender: 'product_id',
+          },
+          align: 'center',
+          width: 100,
+        },
+        {
           title: '操作',
           key: 'action',
           align: 'center',
@@ -242,6 +271,7 @@ export default {
         title: '',
         title_en: '',
       },
+      productList:[]
     };
   },
   mounted() {
@@ -250,7 +280,7 @@ export default {
     if (id) {
       this.product_id = id
     } else { 
-      this.product_id = ''
+      this.product_id = 0
     }
     this.getList();
   },
@@ -273,6 +303,10 @@ export default {
       if (type === 'detail') {
         this.detailModalInfo.visible = true;
         this.detailModalInfo.isEdit = false;
+        if (this.product_id) { 
+          this.detailData.product_id = this.product_id;
+        }
+        this.getProductList()
       }
     },
     editDetailModal(item) {
@@ -291,6 +325,7 @@ export default {
           this.detailData = data;
           this.detailModalInfo.visible = true;
           this.detailModalInfo.isEdit = true;
+          this.getProductList()
         }
       });
     },
@@ -302,11 +337,11 @@ export default {
     },
     handleOk() {
       if (this.detailData.title == '') {
-        this.$message.warning('请输入文件标题！');
+        this.$message.warning('请输入视频标题！');
         return;
       }
       if (this.detailData.title_en == '') {
-        this.$detailData.warning('请输入文件英文标题！');
+        this.$detailData.warning('请输入视频英文标题！');
         return;
       }
       if (this.detailData.description == '') {
@@ -318,11 +353,11 @@ export default {
         return;
       }
       if (this.detailData.link_url == '') {
-        this.$message.warning('请上传文件！');
+        this.$message.warning('请上传视频！');
         return;
       }
       if (this.detailData.link_url_en == '') {
-        this.$message.warning('请上传英文文件！');
+        this.$message.warning('请上传英文视频！');
         return;
       }
       if (this.detailData.pic_url == '') {
@@ -355,10 +390,10 @@ export default {
             }
           });
       } else {
-        if (this.product_id == '') {
-          this.$message.warning('请先完成商品录入');
-          return;
-        }
+        // if (this.product_id == '') {
+        //   this.$message.warning('请先完成商品录入');
+        //   return;
+        // }
         this.btnLoading = true;
         linkAdd({
           type:1,
@@ -381,6 +416,17 @@ export default {
         this.tableLoading = false;
         if (res.data.code == 200) {
           this.getList();
+        }
+      });
+    },
+    getProductList() {
+      productListQuery({
+        page: 1,
+        pageSiz:100,
+      }).then((res) => {
+        if (res.data.code == 200) {
+          const { list } = res.data.data;
+          this.productList = list;
         }
       });
     },
@@ -422,6 +468,11 @@ export default {
     handleSearch() {
       this.pagination.current = 1;
       this.getList();
+    },
+    filterOption(input, option) {
+      return (
+        option.componentOptions.children[0].text.toLowerCase().indexOf(input.toLowerCase()) >= 0
+      );
     },
   },
 };
