@@ -126,12 +126,12 @@
             </a-col> -->
             <a-col :md="11" :sm="11" :xs="11" :span="11">
               <a-form-item label="缩略图">
-                <imgUploadWithCrop v-if="visible" multiple :maxCount="2" :urls="editData.pic_url" @uploadImgChange="uploadImgChange($event,'pic_url')" />
+                <imgCropUpload v-if="visible" multiple :maxCount="2" :urls="editData.pic_url" @uploadImgChange="uploadImgChange($event,'pic_url')" />
               </a-form-item>
             </a-col>
             <a-col :md="11" :sm="11" :xs="11" :span="11">
               <a-form-item label="英文缩略图">
-                <imgUpload v-if="visible" multiple :maxCount="2" :urls="editData.pic_url_en" @uploadImgChange="uploadImgChange($event,'pic_url_en')" />
+                <imgCropUpload v-if="visible" multiple :maxCount="2" :urls="editData.pic_url_en" @uploadImgChange="uploadImgChange($event,'pic_url_en')" />
               </a-form-item>
             </a-col>
             
@@ -174,8 +174,8 @@
 <script>
 import { cloneDeep } from 'lodash-es';
 import { BASE_PAGINATION } from '@/rayframework/common-pagination';
-import imgUpload from '@/components/my/imgUpload.vue';
-import imgUploadWithCrop from '@/components/my/imgUploadWithCrop.vue';
+// import imgUpload from '@/components/my/imgUpload.vue';
+import imgCropUpload from '@/components/my/imgCropUpload.vue';
 import previewImgModal from '@/components/my/previewImgModal.vue';
 import editorBar from '@/components/my/editorBar'
 import { isJSONString} from '@/utils/util.js'
@@ -210,7 +210,7 @@ const detail = {
 
 
 export default {
-  components: { imgUpload, imgUploadWithCrop,editorBar,previewImgModal },
+  components: {imgCropUpload,editorBar,previewImgModal },
   data() {
     return {
       minHeight: window.innerHeight - 124,
@@ -457,7 +457,7 @@ export default {
             if (res.data.code == 200) {
               // this.hideModal();
               this.$message.success('保存成功！');
-              this.checkDataOflang();
+              this.initEditModal(this.editData)
             }
           });
       } else {

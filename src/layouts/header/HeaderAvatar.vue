@@ -1,6 +1,6 @@
 <template>
   <a-dropdown>
-    <div class="header-avatar" style="cursor: pointer">
+    <div  class="header-avatar" style="cursor: pointer">
       <!-- <a-avatar class="avatar" size="small" shape="circle" :src="user.avatar"/> -->
       <span class="name">{{user.name || 'user'}}</span>
     </div>

@@ -32,6 +32,11 @@
         :data-source="tableData"
         :scroll="{ x: 800, y: taHeight }"
       >
+      <template slot="lunbo_pic" slot-scope="record" v-if="record">
+        <a href="javascript:void(0)">
+          <img :src="record" alt="" style="width: 50px; height: 34px; margin-right: 10px" @click="showPhoto(record)" />
+        </a>
+      </template>
       <template slot="pic_url" slot-scope="record" v-if="record">
         <a href="javascript:void(0)">
           <img :src="record[0].url" alt="" style="width: 50px; height: 34px; margin-right: 10px" @click="showPhoto(record)" />
@@ -86,7 +91,22 @@
             <a-input-number v-model="editData.index_top" :min="0" :max="100" />
           </a-form-item>
         </a-col>
+        <a-col :md="12" :sm="12" :xs="12" :span="12">
+          <a-form-item v-bind="{
+            labelCol: {
+              span: 3,
+            },
+            wrapperCol: {
+              span: 21,
+            },
+          }" 
+            label="首页轮播图">
+            <imgUpload v-if="detailModalInfo.visible" :maxSize="3" :urls="editData.lunbo_pic" @uploadImgChange="detailUploadChange($event,'lunbo_pic')" />
+          </a-form-item>
+        </a-col>
       </a-row>
+
+      
       
       <a-row type="flex" justify="space-between" class="mt20">
         <a-col :md="11" :sm="11" :xs="11" :span="11">
@@ -251,6 +271,7 @@ import {
 } from '../api';
 const  editData = {
   title: '', //	标题
+  lunbo_pic: '', //轮播图 
   pic_url: '', //缩略图
   description:'',//描述
   contents: '', //内容
@@ -297,6 +318,16 @@ export default {
         {
           title: '英文标题',
           dataIndex: 'title_en',
+          align: 'center',
+          width: 100,
+          ellipsis: true,
+        },
+        {
+          title: '轮播图',
+          dataIndex: 'lunbo_pic',
+          scopedSlots: {
+            customRender: 'lunbo_pic',
+          },
           align: 'center',
           width: 100,
           ellipsis: true,
@@ -367,7 +398,12 @@ export default {
   methods: {
     //查看图片
     showPhoto(value) {
-      this.photo = value[0].url;
+      if (value.length == 0) return
+      if(typeof value == 'string'){
+        this.photo = value      
+      }else if(typeof value == 'object' && value[0].url){
+        this.photo = value[0].url;
+      }
       this.$refs.previewImgModalRef.initModal();
     },
     skuListChange(arr, type,name) { 
@@ -376,12 +412,19 @@ export default {
     },
     // 详情modal上传返回
     detailUploadChange(arr,type) {
-      this.editData[type] = arr.map(item => {
-        return {
-          name:item.name,
-          url:item.url
-        }
-       });
+      if (type === 'lunbo_pic') {
+        this.editData[type] = arr.map(item => {
+          return item.url
+        })
+      } else {
+        this.editData[type] = arr.map(item => {
+          return {
+            name:item.name,
+            url:item.url
+          }
+        });
+      }
+   
     },
     initAddModal(type) {
       if (type === 'detail') {
@@ -452,8 +495,12 @@ export default {
       //   this.$message.warning('请输入优惠价！');
       //   return;
       // }
+      if (this.editData.lunbo_pic == '') {
+        this.$message.warning('请上传轮播图！');
+        return;
+      }
       if (this.editData.pic_url == '') {
-        this.$message.warning('请上传缩略图！');
+        this.$message.warning('请上传缩略图！'); 
         return;
       }
       if (this.editData.pic_url_en == '') {

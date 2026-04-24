@@ -272,7 +272,7 @@ export default {
     console.log(this.$route.query)
     const { id } = this.$route.query
     if (id) {
-      this.product_id = id
+      this.product_id = Number(id)
     } else { 
       this.product_id = 0
     }

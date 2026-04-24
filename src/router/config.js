@@ -146,6 +146,23 @@ const options = {
               component: () => import('@/pages/aboutUs/index'),
             }
           ]
+        },{
+          path: 'publicConfig',
+          name: '公共配置',
+          meta: {
+            icon: 'form',
+            page: {
+              cacheAble: false
+            }
+          },
+          component: PageView,
+          children: [
+            {
+              path: 'index',
+              name: '公共配置',
+              component: () => import('@/pages/publicConfig/index'),
+            }
+          ]
         },
       ]
     },

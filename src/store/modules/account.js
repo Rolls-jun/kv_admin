@@ -11,6 +11,7 @@ export default {
       if (!state.user) {
         try {
           const user = localStorage.getItem(process.env.VUE_APP_USER_KEY)
+          if(!user) return
           state.user = JSON.parse(user)
         } catch (e) {
           console.error(e)

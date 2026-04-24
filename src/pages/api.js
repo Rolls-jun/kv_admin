@@ -1,4 +1,4 @@
-import { request, METHOD } from '@/utils/request';
+import { request, METHOD } from "@/utils/request";
 // import Cookie from 'js-cookie'
 
 // eslint-disable-next-line no-undef
@@ -12,7 +12,11 @@ export async function infomationListQuery(data) {
   Object.keys(data).forEach((item) => {
     param.append(item, data[item]);
   });
-  return request(`${API_BASE_URL}/webApi/admin/news/getList`, METHOD.POST, param);
+  return request(
+    `${API_BASE_URL}/webApi/admin/news/getList`,
+    METHOD.POST,
+    param,
+  );
 }
 
 // 资讯：详情
@@ -21,7 +25,11 @@ export function infomationDetail(data) {
   Object.keys(data).forEach((item) => {
     param.append(item, data[item]);
   });
-  return request(`${API_BASE_URL}/webApi/admin/news/detail`, METHOD.POST,param);
+  return request(
+    `${API_BASE_URL}/webApi/admin/news/detail`,
+    METHOD.POST,
+    param,
+  );
 }
 
 // 资讯： 提交新增
@@ -38,7 +46,11 @@ export function infomationUpdate(data) {
   Object.keys(data).forEach((item) => {
     param.append(item, data[item]);
   });
-  return request(`${API_BASE_URL}/webApi/admin/news/updateNews`, METHOD.POST, param);
+  return request(
+    `${API_BASE_URL}/webApi/admin/news/updateNews`,
+    METHOD.POST,
+    param,
+  );
 }
 
 // 栏目设置： 进入修改
@@ -47,7 +59,11 @@ export function infomationDel(data) {
   Object.keys(data).forEach((item) => {
     param.append(item, data[item]);
   });
-  return request(`${API_BASE_URL}/webApi/admin/news/deleteNews`, METHOD.POST, param);
+  return request(
+    `${API_BASE_URL}/webApi/admin/news/deleteNews`,
+    METHOD.POST,
+    param,
+  );
 }
 
 // 产品
@@ -58,7 +74,11 @@ export async function productListQuery(data) {
   Object.keys(data).forEach((item) => {
     param.append(item, data[item]);
   });
-  return request(`${API_BASE_URL}/webApi/admin/product/getList`, METHOD.POST, param);
+  return request(
+    `${API_BASE_URL}/webApi/admin/product/getList`,
+    METHOD.POST,
+    param,
+  );
 }
 
 // 产品：详情
@@ -67,7 +87,11 @@ export function productDetail(data) {
   Object.keys(data).forEach((item) => {
     param.append(item, data[item]);
   });
-  return request(`${API_BASE_URL}/webApi/admin/product/detail`, METHOD.POST,param);
+  return request(
+    `${API_BASE_URL}/webApi/admin/product/detail`,
+    METHOD.POST,
+    param,
+  );
 }
 
 // 产品： 提交新增
@@ -76,7 +100,11 @@ export function productAdd(data) {
   Object.keys(data).forEach((item) => {
     param.append(item, data[item]);
   });
-  return request(`${API_BASE_URL}/webApi/admin/product/add`, METHOD.POST, param);
+  return request(
+    `${API_BASE_URL}/webApi/admin/product/add`,
+    METHOD.POST,
+    param,
+  );
 }
 // 产品： 提交修改
 export function productUpdate(data) {
@@ -84,7 +112,11 @@ export function productUpdate(data) {
   Object.keys(data).forEach((item) => {
     param.append(item, data[item]);
   });
-  return request(`${API_BASE_URL}/webApi/admin/product/updateProduct`, METHOD.POST, param);
+  return request(
+    `${API_BASE_URL}/webApi/admin/product/updateProduct`,
+    METHOD.POST,
+    param,
+  );
 }
 
 // 产品: 删除
@@ -93,7 +125,11 @@ export function productDel(data) {
   Object.keys(data).forEach((item) => {
     param.append(item, data[item]);
   });
-  return request(`${API_BASE_URL}/webApi/admin/product/deleteProduct`, METHOD.POST, param);
+  return request(
+    `${API_BASE_URL}/webApi/admin/product/deleteProduct`,
+    METHOD.POST,
+    param,
+  );
 }
 
 // 文件、视频 1：视频 2：文件
@@ -104,7 +140,11 @@ export async function linkListQuery(data) {
   Object.keys(data).forEach((item) => {
     param.append(item, data[item]);
   });
-  return request(`${API_BASE_URL}/webApi/admin/link/getList`, METHOD.POST, param);
+  return request(
+    `${API_BASE_URL}/webApi/admin/link/getList`,
+    METHOD.POST,
+    param,
+  );
 }
 
 // 文件、视频：列表
@@ -113,7 +153,11 @@ export async function linkDetail(data) {
   Object.keys(data).forEach((item) => {
     param.append(item, data[item]);
   });
-  return request(`${API_BASE_URL}/webApi/admin/link/detail`, METHOD.POST, param);
+  return request(
+    `${API_BASE_URL}/webApi/admin/link/detail`,
+    METHOD.POST,
+    param,
+  );
 }
 
 // 文件、视频： 提交新增
@@ -130,7 +174,11 @@ export function linkUpdate(data) {
   Object.keys(data).forEach((item) => {
     param.append(item, data[item]);
   });
-  return request(`${API_BASE_URL}/webApi/admin/link/updateLink`, METHOD.POST, param);
+  return request(
+    `${API_BASE_URL}/webApi/admin/link/updateLink`,
+    METHOD.POST,
+    param,
+  );
 }
 
 // 文件、视频: 删除
@@ -139,7 +187,11 @@ export function linkDel(data) {
   Object.keys(data).forEach((item) => {
     param.append(item, data[item]);
   });
-  return request(`${API_BASE_URL}/webApi/admin/link/deleteLink`, METHOD.POST, param);
+  return request(
+    `${API_BASE_URL}/webApi/admin/link/deleteLink`,
+    METHOD.POST,
+    param,
+  );
 }
 
 // 留言板
@@ -150,7 +202,11 @@ export async function suggestListQuery(data) {
   Object.keys(data).forEach((item) => {
     param.append(item, data[item]);
   });
-  return request(`${API_BASE_URL}/webApi/admin/suggest/getList`, METHOD.POST, param);
+  return request(
+    `${API_BASE_URL}/webApi/admin/suggest/getList`,
+    METHOD.POST,
+    param,
+  );
 }
 
 // 留言板：已读
@@ -159,7 +215,11 @@ export async function suggestReaded(data) {
   Object.keys(data).forEach((item) => {
     param.append(item, data[item]);
   });
-  return request(`${API_BASE_URL}/webApi/admin/suggest/readed`, METHOD.POST, param);
+  return request(
+    `${API_BASE_URL}/webApi/admin/suggest/readed`,
+    METHOD.POST,
+    param,
+  );
 }
 
 // 订单
@@ -170,7 +230,11 @@ export async function shoppingListQuery(data) {
   Object.keys(data).forEach((item) => {
     param.append(item, data[item]);
   });
-  return request(`${API_BASE_URL}/webApi/admin/shopping/getList`, METHOD.POST, param);
+  return request(
+    `${API_BASE_URL}/webApi/admin/shopping/getList`,
+    METHOD.POST,
+    param,
+  );
 }
 
 // 订单：详情
@@ -179,7 +243,11 @@ export async function shoppingDetail(data) {
   Object.keys(data).forEach((item) => {
     param.append(item, data[item]);
   });
-  return request(`${API_BASE_URL}/webApi/admin/shopping/detail`, METHOD.POST, param);
+  return request(
+    `${API_BASE_URL}/webApi/admin/shopping/detail`,
+    METHOD.POST,
+    param,
+  );
 }
 
 // 关于我们
@@ -188,10 +256,43 @@ export async function webConfigAbout(data) {
   Object.keys(data).forEach((item) => {
     param.append(item, data[item]);
   });
-  return request(`${API_BASE_URL}/webApi/admin/webConfig/aboutUs`, METHOD.POST, param);
+  return request(
+    `${API_BASE_URL}/webApi/admin/webConfig/aboutUs`,
+    METHOD.POST,
+    param,
+  );
 }
 
 // 关于我们 get
 export async function getWebConfigAbout() {
-  return request(`${API_BASE_URL}/webApi/admin/webConfig/getAboutUs`, METHOD.POST);
+  return request(
+    `${API_BASE_URL}/webApi/admin/webConfig/getAboutUs`,
+    METHOD.POST,
+  );
+}
+
+// 公共配置
+export async function webConfig(data) {
+  let param = new FormData();
+  Object.keys(data).forEach((item) => {
+    param.append(item, data[item]);
+  });
+  return request(
+    `${API_BASE_URL}/webApi/admin/webConfig/setConfig`,
+    METHOD.POST,
+    param,
+  );
+}
+
+// 公共配置 get
+export async function getWebConfig(data) {
+  let param = new FormData();
+  Object.keys(data).forEach((item) => {
+    param.append(item, data[item]);
+  });
+  return request(
+    `${API_BASE_URL}/webApi/admin/webConfig/getConfig`,
+    METHOD.POST,
+    param,
+  );
 }
